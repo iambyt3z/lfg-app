@@ -3,6 +3,7 @@ import {
     Grid,
     Pagination,
 } from "@mui/material";
+import AddPostButton from "../../components/AddPostButton";
 import LfgPostCard from "../../components/LfgPostCard";
 import MainLayout from "../../layout/MainLayout";
 import { RootState } from "../../redux/store";
@@ -19,6 +20,7 @@ const MyPosts = () => {
     const {
         pageSelected,
         posts,
+        refreshCounter,
         totalNumberOfPages,
     } = applicationContextState;
 
@@ -59,6 +61,8 @@ const MyPosts = () => {
                     />
                 </Box>
             </Box>
+
+            <AddPostButton/>
         </MainLayout>
     );
 };

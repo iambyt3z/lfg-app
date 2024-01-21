@@ -1,4 +1,6 @@
-import { 
+import {
+    increamentRefreshCounter,
+    setOpenBackdrop,
     setPageSelected,
     setPosts,
     setSearchText,
@@ -14,6 +16,13 @@ function applicationContextActionsProvider() {
 
     return (
         {
+            "increamentRefreshCounter": () =>
+                dispatch(increamentRefreshCounter()),
+
+            "setOpenBackdrop":
+            (openBackdrop: ApplicationContext["openBackdrop"]) =>
+                dispatch(setOpenBackdrop(openBackdrop)),
+
             "setPageSelected":
             (pageSelected: ApplicationContext["pageSelected"]) =>
                 dispatch(setPageSelected(pageSelected)),

@@ -5,6 +5,19 @@ const applicationContextSlice = createSlice({
     "initialState": initialApplicationContextState,
     "name": "applicationContext",
     "reducers": {
+        "increamentRefreshCounter": (
+            state: ApplicationContext
+        ) => {
+            state.refreshCounter += 1;
+        },
+
+        "setOpenBackdrop": (
+            state: ApplicationContext,
+            action: PayloadAction<ApplicationContext["openBackdrop"]>
+        ) => {
+            state.openBackdrop = action.payload;
+        },
+
         "setPageSelected": (
             state: ApplicationContext,
             action: PayloadAction<ApplicationContext["pageSelected"]>
@@ -43,6 +56,8 @@ const applicationContextSlice = createSlice({
 });
 
 export const {
+    increamentRefreshCounter,
+    setOpenBackdrop,
     setPageSelected,
     setPosts,
     setSearchText,

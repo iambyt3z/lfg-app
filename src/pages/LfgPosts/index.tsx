@@ -5,10 +5,14 @@ import {
     Paper,
     Stack
 } from "@mui/material";
+import AddPostButton from "../../components/AddPostButton";
 import LfgPostCard from "../../components/LfgPostCard";
+import LfgPostData from "../../interfaces/LfgPostData";
 import MainLayout from "../../layout/MainLayout";
 import { RootState } from "../../redux/store";
 import applicationContextActionsProvider from "../../redux/applicationContext/actions";
+import useAuthorizedAxiosInstance from "../../axios/authorizedAxios";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const drawerWidth = 240;
@@ -23,12 +27,61 @@ const LfgPosts = () => {
     const {
         pageSelected,
         posts,
+        refreshCounter,
         totalNumberOfPages,
     } = applicationContextState;
 
     const {
         setPageSelected,
+        setTotalNumberOfPages,
+        setPosts,
+        setOpenBackdrop,
     } = applicationContextActionsProvider();
+
+    const authorizedAxiosInstance = useAuthorizedAxiosInstance();
+    const authorizedAxios = authorizedAxiosInstance();
+
+    const fetchPosts = (pageNumber: number) => {
+        setOpenBackdrop(true);
+
+        authorizedAxios.get(`/getPosts?page=${pageNumber}`)
+            .then((response) => {
+                console.log(response);
+                const postsData = response.data;
+                const { totalPages, posts } = postsData;
+
+                const finalPosts: LfgPostData[] = posts.map((post: any) => {
+                    const originalDate = new Date(post.createdAt.$date);
+                    const formattedDate = originalDate.toLocaleDateString('en-US', {
+                        "day": '2-digit',
+                        "month": '2-digit',
+                        "year": 'numeric'
+                    });
+
+                    const finalPost: LfgPostData = {
+                        "createdBy": post.createdBy,
+                        "createdOn": formattedDate,
+                        "description": post.description,
+                        "heading": post.title,
+                        "id": post._id.$oid,
+                    };
+
+                    return finalPost;
+                });
+
+                setTotalNumberOfPages(totalPages);
+                setPosts(finalPosts);
+                setOpenBackdrop(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setOpenBackdrop(false);
+            });
+    };
+
+    useEffect(() => {
+        fetchPosts(1);
+    }, [refreshCounter]);
 
     return (
         <MainLayout>
@@ -61,7 +114,10 @@ const LfgPosts = () => {
                     <Box width="100%" display="flex" justifyContent="center">
                         <Pagination
                             page={pageSelected}
-                            onChange={(_event, value: number) => setPageSelected(value)}
+                            onChange={(_event, value: number) => {
+                                setPageSelected(value);
+                                fetchPosts(value);
+                            }}
                             count={totalNumberOfPages} 
                             variant="outlined" 
                             shape="rounded"
@@ -71,6 +127,8 @@ const LfgPosts = () => {
                     </Box>
                 </Box>
             </Stack>
+
+            <AddPostButton/>
         </MainLayout>
     );
 };

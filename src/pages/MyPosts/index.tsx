@@ -30,7 +30,6 @@ const MyPosts = () => {
     const {
         setPageSelected,
         setPosts,
-        // increamentRefreshCounter,
         setOpenBackdrop,
         setTotalNumberOfPages
     } = applicationContextActionsProvider();
@@ -43,7 +42,6 @@ const MyPosts = () => {
 
         authorizedAxios.get(`/getPostsByUser?page=${pageNumber}`)
             .then((response) => {
-                console.log(response);
                 const postsData = response.data;
                 const { totalPages, posts } = postsData;
 

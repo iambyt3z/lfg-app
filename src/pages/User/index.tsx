@@ -18,7 +18,6 @@ import userContextActionsProvider from "../../redux/userContext/actions";
 
 const User = () => {
     const [editProfileOpen, setEditProfileOpen] = useState(false);
-    const [refresh, setRefresh] = useState(0);
 
     const userContextState = useSelector((state: RootState) =>
         state
@@ -31,8 +30,6 @@ const User = () => {
     } = userContextState;
 
     const {
-        setAboutUser,
-        setInterests,
         setName,
         setUsername,
     } = userContextActionsProvider();
@@ -117,7 +114,6 @@ const User = () => {
                         name={name}
                         onSaveChangesClick={() => {
                             setEditProfileOpen(false);
-                            console.log("saved");
                         }}
                     />
                 </Modal>

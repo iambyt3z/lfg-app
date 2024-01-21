@@ -5,6 +5,10 @@ const userContextSlice = createSlice({
     "initialState": initialUserContextState,
     "name": "userContext",
     "reducers": {
+        "clearState": () => {
+            return initialUserContextState;
+        },
+
         "setAboutUser": (
             state: UserContext,
             action: PayloadAction<UserContext["aboutUser"]>
@@ -43,6 +47,7 @@ const userContextSlice = createSlice({
 });
 
 export const {
+    clearState,
     setAboutUser,
     setInterests,
     setName,

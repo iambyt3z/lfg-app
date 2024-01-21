@@ -3,7 +3,6 @@ import {
     Box, 
     IconButton, 
     InputBase, 
-    Link, 
     Menu, 
     MenuItem, 
     Toolbar, 
@@ -16,6 +15,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useNavigate } from "react-router-dom";
+import userContextActionsProvider from "../../redux/userContext/actions";
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -68,6 +68,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
     const navigate = useNavigate();
 
+    const { clearState } = userContextActionsProvider();
+
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -84,6 +86,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
     const handleLogout = () => {
         setAnchorEl(null);
+        clearState();
         navigate("/login");
     };
 
@@ -137,8 +140,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 }}
             >
                 <Toolbar>
-                    <Link href="/" underline="none" color="inherit">
-                        <Typography 
+                    <Box
+                        onClick={() => navigate("/")}
+                        sx={{ "&:hover": { "cursor": "pointer" } }}
+                    >
+                        <Typography
                             variant="h4" 
                             fontWeight="600"
                             letterSpacing={4}
@@ -146,7 +152,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                         >
                             LFG
                         </Typography>
-                    </Link>
+                    </Box>
 
                     <Box width="800px" ml={5}>
                         <Search>

@@ -1,6 +1,7 @@
 import LfgPosts from "../pages/LfgPosts";
 import Login from "../pages/Login";
 import MyPosts from "../pages/MyPosts";
+import PrivateRoute from "./PrivateRoute";
 import Signup from "../pages/Signup";
 import User from "../pages/User";
 import { useRoutes } from "react-router-dom";
@@ -8,11 +9,17 @@ import { useRoutes } from "react-router-dom";
 export default function Router() {
     let routes = useRoutes([
         {
-            "element": <LfgPosts/>,
+            "element": 
+                <PrivateRoute>
+                    <LfgPosts/>
+                </PrivateRoute>,
             "path": "/",
         },
         {
-            "element": <MyPosts/>,
+            "element": 
+                <PrivateRoute>
+                    <MyPosts/>
+                </PrivateRoute>,
             "path": "/my-posts",
         },
         {
@@ -24,7 +31,10 @@ export default function Router() {
             "path": "/signup",
         },
         {
-            "element": <User/>,
+            "element": 
+                <PrivateRoute>
+                    <User/>
+                </PrivateRoute>,
             "path": "/profile",
         }
     ]);

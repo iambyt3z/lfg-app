@@ -1,4 +1,5 @@
-import { 
+import {
+    clearState,
     setAboutUser,
     setInterests,
     setName,
@@ -14,6 +15,8 @@ function userContextActionsProvider() {
 
     return (
         {
+            "clearState": () => dispatch(clearState()),
+
             "setAboutUser":
             (aboutUser: UserContext["aboutUser"]) =>
                 dispatch(setAboutUser(aboutUser)),

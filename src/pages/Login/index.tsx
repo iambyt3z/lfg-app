@@ -37,6 +37,7 @@ const Login = () => {
 
     const {
         setUserToken,
+        setUsername,
     } = userContextActionsProvider();
 
     const normalAxiosInstance = useNormalAxiosInstance();
@@ -56,6 +57,7 @@ const Login = () => {
             .then((response) => {
                 const { token } = response.data;
                 setUserToken(token);
+                setUsername(loginId);
                 navigate("/");
             })
             .catch((error) => {

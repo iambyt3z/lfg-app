@@ -3,12 +3,13 @@ import {
     setInterests,
     setName,
     setUserToken,
+    setUsername,
 } from "./reducer";
 
 import { UserContext } from "./initialState";
 import { useDispatch } from "react-redux";
 
-function applicationContextActionsProvider() {
+function userContextActionsProvider() {
     const dispatch = useDispatch();
 
     return (
@@ -28,8 +29,12 @@ function applicationContextActionsProvider() {
             "setUserToken":
             (userToken: UserContext["userToken"]) =>
                 dispatch(setUserToken(userToken)),
+
+            "setUsername":
+            (username: UserContext["username"]) =>
+                dispatch(setUsername(username)),
         }
     );
 };
 
-export default applicationContextActionsProvider;
+export default userContextActionsProvider;

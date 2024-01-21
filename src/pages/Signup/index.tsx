@@ -8,8 +8,40 @@ import {
 } from "@mui/material";
 
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { toFormData } from "axios";
+import { useNavigate } from "react-router-dom";
+import useNormalAxiosInstance from "../../axios/normalAxios";
+import { useState } from "react";
 
 const Signup = () => {
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+
+    const normalAxiosInstance = useNormalAxiosInstance();
+    const normalAxios = normalAxiosInstance();
+    const navigate = useNavigate();
+
+    const handleSignup = () => {
+        const formData = toFormData({
+            "name": name,
+            "password": password,
+            "user_tags": "",
+            "username": email,
+        });
+        
+        normalAxios({
+            "data": formData,
+            "url": "/register",
+        })
+            .then(() => {
+                navigate("/login");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     return (
         <Box
             width="100vw"
@@ -35,6 +67,8 @@ const Signup = () => {
 
                     <Box sx={{ "mt": 1 }}>
                         <TextField
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
                             margin="normal"
                             required
                             fullWidth
@@ -46,6 +80,8 @@ const Signup = () => {
                         />
 
                         <TextField
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
                             margin="normal"
                             required
                             fullWidth
@@ -56,17 +92,19 @@ const Signup = () => {
                         />
 
                         <TextField
+                            value={password}
+                            onChange={(event) => setPassword(event.target.value)}
                             margin="normal"
                             required
                             fullWidth
                             name="password"
                             label="Password"
-                            type="password"
                             id="password"
                             autoComplete="current-password"
                         />
 
                         <Button
+                            onClick={handleSignup}
                             type="submit"
                             fullWidth
                             variant="contained"

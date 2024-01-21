@@ -49,7 +49,7 @@ const LfgPosts = () => {
                     >
                         {posts.map((post) => {
                             return (
-                                <Grid item xs={4} id={post.id}>
+                                <Grid item xs={4} key={post.id}>
                                     <LfgPostCard
                                         postData={post}
                                     />

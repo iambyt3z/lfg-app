@@ -6,14 +6,56 @@ import {
     Typography
 } from "@mui/material";
 
+import { useEffect, useState } from "react";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EditProfile from "./components/EditProfile";
 import MainLayout from "../../layout/MainLayout";
 import Modal from "../../components/Modal";
-import { useState } from "react";
+import { RootState } from "../../redux/store";
+import useAuthorizedAxiosInstance from "../../axios/authorizedAxios";
+import { useSelector } from "react-redux";
+import userContextActionsProvider from "../../redux/userContext/actions";
 
 const User = () => {
     const [editProfileOpen, setEditProfileOpen] = useState(false);
+    const [refresh, setRefresh] = useState(0);
+
+    const userContextState = useSelector((state: RootState) =>
+        state
+            .userContextState
+    );
+
+    const {
+        aboutUser,
+        name,
+    } = userContextState;
+
+    const {
+        setAboutUser,
+        setInterests,
+        setName,
+        setUsername,
+    } = userContextActionsProvider();
+
+    const authorizedAxiosInstance = useAuthorizedAxiosInstance();
+    const authorizedAxios = authorizedAxiosInstance();
+
+    useEffect(() => {
+        authorizedAxios.get("/getUser")
+            .then((response) => {
+                const userData = response.data.user;
+                const {
+                    fname,
+                    username
+                } = userData;
+
+                setName(fname);
+                setUsername(username);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
 
     return (
         <MainLayout>
@@ -41,7 +83,7 @@ const User = () => {
                                     variant="h6" 
                                     fontWeight="500" 
                                 >
-                                Full Name
+                                    {name}
                                 </Typography>
                             </Box>
                         </Stack>
@@ -52,9 +94,9 @@ const User = () => {
 
                         <Typography paddingLeft={5}>
                             {
-                                ("" === "")
+                                (aboutUser === "")
                                     ? "Write something about you here!"
-                                    : ""
+                                    : aboutUser
                             }
                         </Typography>
 
@@ -70,7 +112,14 @@ const User = () => {
                     open={editProfileOpen}
                     onClose={() => setEditProfileOpen(false)}
                 >
-                    <EditProfile onSaveChangesClick={() => setEditProfileOpen(false)}/>
+                    <EditProfile
+                        aboutUser={aboutUser}
+                        name={name}
+                        onSaveChangesClick={() => {
+                            setEditProfileOpen(false);
+                            console.log("saved");
+                        }}
+                    />
                 </Modal>
             </Box>
         </MainLayout>

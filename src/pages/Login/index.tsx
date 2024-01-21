@@ -12,7 +12,11 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { RootState } from "../../redux/store";
 import loginActionsProvider from "../../redux/login/actions";
+import { toFormData } from "axios";
+import { useNavigate } from "react-router-dom";
+import useNormalAxiosInstance from "../../axios/normalAxios";
 import { useSelector } from "react-redux";
+import userContextActionsProvider from "../../redux/userContext/actions";
 
 const Login = () => {
     const loginState = useSelector(
@@ -30,6 +34,34 @@ const Login = () => {
         setLoginId,
         setPassword,
     } = loginActionsProvider();
+
+    const {
+        setUserToken,
+    } = userContextActionsProvider();
+
+    const normalAxiosInstance = useNormalAxiosInstance();
+    const normalAxios = normalAxiosInstance();
+    const navigate = useNavigate();
+
+    const handleLogin = () => {
+        const formData = toFormData({
+            "password": password,
+            "username": loginId,
+        });
+
+        normalAxios({
+            "data": formData,
+            "url": "/login",
+        })
+            .then((response) => {
+                const { token } = response.data;
+                setUserToken(token);
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
 
     return (
         <Box
@@ -82,6 +114,7 @@ const Login = () => {
                         />
 
                         <Button
+                            onClick={handleLogin}
                             type="submit"
                             fullWidth
                             variant="contained"

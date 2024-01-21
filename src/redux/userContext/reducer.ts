@@ -32,6 +32,13 @@ const userContextSlice = createSlice({
         ) => {
             state.userToken = action.payload;
         },
+
+        "setUsername": (
+            state: UserContext,
+            action: PayloadAction<UserContext["username"]>
+        ) => {
+            state.username = action.payload;
+        },
     }
 });
 
@@ -39,7 +46,8 @@ export const {
     setAboutUser,
     setInterests,
     setName,
-    setUserToken
+    setUserToken,
+    setUsername
 } = userContextSlice.actions;
 
 export default userContextSlice.reducer;

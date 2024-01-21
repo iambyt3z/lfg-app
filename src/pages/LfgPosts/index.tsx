@@ -38,7 +38,6 @@ const LfgPosts = () => {
                     "height": "calc(100vh - 75px)",
                     "width": drawerWidth,
                 }}>
-                    drawer
                 </Paper>
 
                 <Box py={5} px={10} width="100%">
@@ -52,9 +51,7 @@ const LfgPosts = () => {
                             return (
                                 <Grid item xs={4} id={post.id}>
                                     <LfgPostCard
-                                        heading={post.heading}
-                                        createdBy={post.createdBy}
-                                        createdOn={post.createdOn}
+                                        postData={post}
                                     />
                                 </Grid>
                             );

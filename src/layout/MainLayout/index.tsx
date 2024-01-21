@@ -79,6 +79,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
 
     const handleRedirectToMyPosts = () => {
         setAnchorEl(null);
+        navigate("/my-posts");
     };
 
     const handleLogout = () => {

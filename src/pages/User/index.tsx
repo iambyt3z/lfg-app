@@ -1,7 +1,6 @@
 import {
     Box,
     Button,
-    Modal,
     Paper,
     Stack,
     Typography
@@ -10,6 +9,7 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EditProfile from "./components/EditProfile";
 import MainLayout from "../../layout/MainLayout";
+import Modal from "../../components/Modal";
 import { useState } from "react";
 
 const User = () => {
@@ -69,8 +69,6 @@ const User = () => {
                 <Modal
                     open={editProfileOpen}
                     onClose={() => setEditProfileOpen(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
                 >
                     <EditProfile onSaveChangesClick={() => setEditProfileOpen(false)}/>
                 </Modal>

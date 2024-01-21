@@ -61,7 +61,7 @@ const LfgPosts = () => {
                     <Box width="100%" display="flex" justifyContent="center">
                         <Pagination
                             page={pageSelected}
-                            onChange={(event, value: number) => setPageSelected(value)}
+                            onChange={(_event, value: number) => setPageSelected(value)}
                             count={totalNumberOfPages} 
                             variant="outlined" 
                             shape="rounded"

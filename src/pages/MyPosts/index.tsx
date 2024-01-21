@@ -5,9 +5,12 @@ import {
 } from "@mui/material";
 import AddPostButton from "../../components/AddPostButton";
 import LfgPostCard from "../../components/LfgPostCard";
+import LfgPostData from "../../interfaces/LfgPostData";
 import MainLayout from "../../layout/MainLayout";
 import { RootState } from "../../redux/store";
 import applicationContextActionsProvider from "../../redux/applicationContext/actions";
+import useAuthorizedAxiosInstance from "../../axios/authorizedAxios";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const MyPosts = () => {
@@ -26,7 +29,56 @@ const MyPosts = () => {
 
     const {
         setPageSelected,
+        setPosts,
+        // increamentRefreshCounter,
+        setOpenBackdrop,
+        setTotalNumberOfPages
     } = applicationContextActionsProvider();
+
+    const authorizedAxiosInstance = useAuthorizedAxiosInstance();
+    const authorizedAxios = authorizedAxiosInstance();
+
+    const fetchMyPosts = (pageNumber: number) => {
+        setOpenBackdrop(true);
+
+        authorizedAxios.get(`/getPostsByUser?page=${pageNumber}`)
+            .then((response) => {
+                console.log(response);
+                const postsData = response.data;
+                const { totalPages, posts } = postsData;
+
+                const finalPosts: LfgPostData[] = posts.map((post: any) => {
+                    const originalDate = new Date(post.createdAt.$date);
+                    const formattedDate = originalDate.toLocaleDateString('en-US', {
+                        "day": '2-digit',
+                        "month": '2-digit',
+                        "year": 'numeric'
+                    });
+
+                    const finalPost: LfgPostData = {
+                        "createdBy": post.createdBy,
+                        "createdOn": formattedDate,
+                        "description": post.description,
+                        "heading": post.title,
+                        "id": post._id.$oid,
+                    };
+
+                    return finalPost;
+                });
+
+                setTotalNumberOfPages(totalPages);
+                setPosts(finalPosts);
+                setOpenBackdrop(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                setOpenBackdrop(false);
+            });
+    };
+
+    useEffect(() => {
+        fetchMyPosts(1);
+    }, [refreshCounter]);
 
     return (
         <MainLayout>

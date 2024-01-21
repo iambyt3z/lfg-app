@@ -1,3 +1,4 @@
+import LfgPosts from "../pages/LfgPosts";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import User from "../pages/User";
@@ -6,7 +7,7 @@ import { useRoutes } from "react-router-dom";
 export default function Router() {
     let routes = useRoutes([
         {
-            "element": <>Hello World!</>,
+            "element": <LfgPosts/>,
             "path": "/",
         },
         {
@@ -19,7 +20,7 @@ export default function Router() {
         },
         {
             "element": <User/>,
-            "path": "/user",
+            "path": "/profile",
         }
     ]);
 

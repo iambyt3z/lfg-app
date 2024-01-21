@@ -15,6 +15,7 @@ import {
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
+import { useNavigate } from "react-router-dom";
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -65,16 +66,24 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const isMenuOpen = Boolean(anchorEl);
 
+    const navigate = useNavigate();
+
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
     const handleRedirectToProfile = () => {
         setAnchorEl(null);
+        navigate("/profile");
+    };
+
+    const handleRedirectToMyPosts = () => {
+        setAnchorEl(null);
     };
 
     const handleLogout = () => {
         setAnchorEl(null);
+        navigate("/login");
     };
 
     const menuId = "primary-search-account-menu";
@@ -98,6 +107,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 "marginTop": "45px",
             }}
         >
+            <MenuItem onClick={handleRedirectToMyPosts}>
+                My Posts
+            </MenuItem>
+
             <MenuItem onClick={handleRedirectToProfile}>
                 Profile
             </MenuItem>
@@ -123,11 +136,12 @@ const MainLayout: React.FC<MainLayoutProps> = ({
                 }}
             >
                 <Toolbar>
-                    <Link href="/lfg" underline="none" color="inherit">
+                    <Link href="/" underline="none" color="inherit">
                         <Typography 
                             variant="h4" 
                             fontWeight="600"
                             letterSpacing={4}
+                            fontFamily="Montserrat Variable"
                         >
                             LFG
                         </Typography>

@@ -25,7 +25,7 @@ const User = () => {
                 }}>
                     <Stack spacing={3}>
                         <Typography variant="h4" fontWeight="500" paddingLeft={1}>
-                            Account
+                            Profile
                         </Typography>
 
                         <Stack direction="row">
